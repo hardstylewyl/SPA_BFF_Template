@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34902.65
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{404807F0-5CAE-4CE9-9FD3-49F1E6365F1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VueBffProxy.Server", "src\Server\VueBffProxy.Server\VueBffProxy.Server.csproj", "{D49CBADA-8568-4403-904E-E17C2C1DFA19}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D49CBADA-8568-4403-904E-E17C2C1DFA19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D49CBADA-8568-4403-904E-E17C2C1DFA19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D49CBADA-8568-4403-904E-E17C2C1DFA19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D49CBADA-8568-4403-904E-E17C2C1DFA19}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D49CBADA-8568-4403-904E-E17C2C1DFA19} = {404807F0-5CAE-4CE9-9FD3-49F1E6365F1A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F1A20B0F-78DF-40DC-820A-DEC63E654679}
+	EndGlobalSection
+EndGlobal
