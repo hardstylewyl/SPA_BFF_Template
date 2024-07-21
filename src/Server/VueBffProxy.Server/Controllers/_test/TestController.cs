@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace VueBffProxy.Server.Controllers;
+namespace VueBffProxy.Server.Controllers._test;
 
 [Route("api/[controller]/[action]")]
 [ApiController]
