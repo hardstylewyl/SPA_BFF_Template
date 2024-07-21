@@ -5,10 +5,7 @@ public static class SecurityHeadersDefinitions
 	//配置 cors和xss 防护
 	public static HeaderPolicyCollection GetHeaderPolicyCollection(bool isDev, string? idpHost, bool relaxCspForSwagger = false)
 	{
-		if (idpHost == null)
-		{
-			throw new ArgumentNullException(nameof(idpHost));
-		}
+		ArgumentNullException.ThrowIfNull(idpHost);
 
 		var policy = new HeaderPolicyCollection()
 			.AddFrameOptionsDeny()
