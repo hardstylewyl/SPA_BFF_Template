@@ -6,3 +6,4 @@
 #### 分支说明 
 
 Integrated-Identity-Services 集成OpenIddict搭建的授权服务，以及使用了yarp的反向代理方案
+https://gitee.com/hardstylewyl/spa_bff_template/tree/Integrated-Identity-Services/
