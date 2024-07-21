@@ -17,22 +17,24 @@
     }
     else
     {
-        source = System.IO.File.ReadAllText($"{System.IO.Directory.GetCurrentDirectory()}{@"\wwwroot\index.html"}");
+        source = await System.IO.File.ReadAllTextAsync($"{System.IO.Directory.GetCurrentDirectory()}{@"\wwwroot\index.html"}");
     }
 
+    //生成随机数
     var nonce = HttpContext.GetNonce();
 
     // The nonce is passed to the client through the HTML to avoid sync issues between tabs
     source = source.Replace("**REPLACE_THIS_VALUE_WITH_SAFE_NONCE**", nonce);
 
-    // var nonceScript = $"<script nonce=\"{nonce}\" ";
-    // source = source.Replace("<script ", nonceScript);
+    var nonceScript = $"<script nonce=\"{nonce}\" ";
+    source = source.Replace("<script ", nonceScript);
 
-    // // link rel="stylesheet"
-    // var nonceLinkStyle = $"<link nonce=\"{nonce}\" rel=\"stylesheet";
-    // source = source.Replace("<link rel=\"stylesheet", nonceLinkStyle);
+    // link rel="stylesheet"
+    var nonceLinkStyle = $"<link nonce=\"{nonce}\" rel=\"stylesheet";
+    source = source.Replace("<link rel=\"stylesheet", nonceLinkStyle);
 
 
+    //******以下处理将由XSRFTokenMiddleware接管处理************
     //var xsrf = antiForgery.GetAndStoreTokens(HttpContext);
     //var requestToken = xsrf.RequestToken;
     
