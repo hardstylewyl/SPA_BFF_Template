@@ -8,28 +8,28 @@ var configuration = builder.Configuration;
 var env = builder.Environment;
 
 services.AddInfrastructure()
-    .AddSecurity(configuration);
+	.AddSecurity(configuration);
 
 if (env.IsDevelopment())
 {
-    services.AddProxies();
+	services.AddProxies();
 }
 
 var app = builder.Build();
 
-//ÅäÖÃ°²È«Í·
+//é…ç½®å®‰å…¨å¤´
 app.UseSecurityHeaders(SecurityHeadersDefinitions.GetHeaderPolicyCollection(env.IsDevelopment(), configuration["idp"]));
-//È·±£Ã¿´ÎÇëÇó¶¼ÓĞXSRF-TOKEN
+//ç¡®ä¿æ¯æ¬¡è¯·æ±‚éƒ½æœ‰XSRF-TOKEN
 app.UseMiddleware<XSRFTokenMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
+	app.UseDeveloperExceptionPage();
 }
 else
 {
-    app.UseExceptionHandler("/Error");
-    app.UseHsts();
+	app.UseExceptionHandler("/Error");
+	app.UseHsts();
 }
 
 app.UseHttpsRedirection();
@@ -45,35 +45,34 @@ app.UseAuthorization();
 app.MapRazorPages();
 app.MapControllers();
 
-// ÒÔÏÂÊÇSPAÌØ¶¨Â·ÓÉ
+// ä»¥ä¸‹æ˜¯SPAç‰¹å®šè·¯ç”±
 
 app.MapNotFound("/api/{**segment}");
 
-//¿ª·¢»·¾³´úÀívite¹¹½¨µÄ³ÌĞò
+//å¼€å‘ç¯å¢ƒä»£ç†viteæ„å»ºçš„ç¨‹åº
 if (env.IsDevelopment())
 {
-    var spaDevServer = app.Configuration.GetValue<string>("SpaDevServerUrl");
-    if (!string.IsNullOrEmpty(spaDevServer))
-    {
-        // ´úÀíÎÒÃÇÈÏÎªÓ¦¸Ã·¢ËÍµ½vite-dev·şÎñÆ÷µÄÈÎºÎÇëÇó
-        app.MapWhen(context =>
-            {
-                var path = context.Request.Path.ToString();
-                var isFileRequest = path.StartsWith("/@", StringComparison.InvariantCulture) // some libs
-                || path.StartsWith("/src", StringComparison.InvariantCulture) // source files
-                || path.StartsWith("/node_modules", StringComparison.InvariantCulture); // other libs
+	var spaDevServer = app.Configuration.GetValue<string>("SpaDevServerUrl");
+	if (!string.IsNullOrEmpty(spaDevServer))
+	{
+		// ä»£ç†æˆ‘ä»¬è®¤ä¸ºåº”è¯¥å‘é€åˆ°vite-devæœåŠ¡å™¨çš„ä»»ä½•è¯·æ±‚
+		app.MapWhen(context =>
+			{
+				var path = context.Request.Path.ToString();
+				var isFileRequest = path.StartsWith("/@", StringComparison.InvariantCulture) // some libs
+				|| path.StartsWith("/src", StringComparison.InvariantCulture) // source files
+				|| path.StartsWith("/node_modules", StringComparison.InvariantCulture); // other libs
 
-                return isFileRequest;
-            }, app2 => app2.Run(context =>
-            {
-                var targetPath = $"{spaDevServer}{context.Request.Path}{context.Request.QueryString}";
-                return context.HttpProxyAsync(targetPath);
-            }));
-
-    }
+				return isFileRequest;
+			}, app2 => app2.Run(context =>
+			{
+				var targetPath = $"{spaDevServer}{context.Request.Path}{context.Request.QueryString}";
+				return context.HttpProxyAsync(targetPath);
+			}));
+	}
 }
 
-// ´¦ÀíspaÂ·ÓÉ
+// å¤„ç†spaè·¯ç”±
 app.MapFallbackToPage("/_Host");
 
 app.Run();

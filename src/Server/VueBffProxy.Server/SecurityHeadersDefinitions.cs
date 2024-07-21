@@ -2,88 +2,84 @@ namespace VueBffProxy.Server;
 
 public static class SecurityHeadersDefinitions
 {
-    //ÅäÖÃ corsºÍxss ·À»¤
-    public static HeaderPolicyCollection GetHeaderPolicyCollection(bool isDev, string? idpHost, bool relaxCspForSwagger = false)
-    {
-        if (idpHost == null)
-        {
-            throw new ArgumentNullException(nameof(idpHost));
-        }
+	//é…ç½® corså’Œxss é˜²æŠ¤
+	public static HeaderPolicyCollection GetHeaderPolicyCollection(bool isDev, string? idpHost, bool relaxCspForSwagger = false)
+	{
+		if (idpHost == null)
+		{
+			throw new ArgumentNullException(nameof(idpHost));
+		}
 
-        var policy = new HeaderPolicyCollection()
-            .AddFrameOptionsDeny()
-            .AddXssProtectionBlock()
-            .AddContentTypeOptionsNoSniff()
-            .AddReferrerPolicyStrictOriginWhenCrossOrigin()
-            .AddCrossOriginOpenerPolicy(builder => builder.SameOrigin())
-            .AddCrossOriginResourcePolicy(builder => builder.SameOrigin())
-            .AddCrossOriginEmbedderPolicy(builder => builder.RequireCorp())
-            .AddContentSecurityPolicy(builder =>
-            {
-                builder.AddObjectSrc().None();
-                builder.AddBlockAllMixedContent();
-                builder.AddImgSrc().Self().From("data:");
-                builder.AddFormAction().Self().From(idpHost);
-                builder.AddFontSrc().Self().From("data:");
+		var policy = new HeaderPolicyCollection()
+			.AddFrameOptionsDeny()
+			.AddXssProtectionBlock()
+			.AddContentTypeOptionsNoSniff()
+			.AddReferrerPolicyStrictOriginWhenCrossOrigin()
+			.AddCrossOriginOpenerPolicy(builder => builder.SameOrigin())
+			.AddCrossOriginResourcePolicy(builder => builder.SameOrigin())
+			.AddCrossOriginEmbedderPolicy(builder => builder.RequireCorp())
+			.AddContentSecurityPolicy(builder =>
+			{
+				builder.AddObjectSrc().None();
+				builder.AddBlockAllMixedContent();
+				builder.AddImgSrc().Self().From("data:");
+				builder.AddFormAction().Self().From(idpHost);
+				builder.AddFontSrc().Self().From("data:");
 
-                if (relaxCspForSwagger)
-                {
-                    builder.AddStyleSrc().Self().UnsafeInline();
-                    builder.AddScriptSrc().Self().UnsafeInline();
-                }
-                else
-                {
-                    // ÅäÖÃ csp
-                    // ±¿·½·¨ ¿ÉÒÔÔÚ¹È¸èä¯ÀÀÆ÷ÕÒµ½¿ØÖÆÌ¨±¨´íÖÐÌá¹©µÄsha256ÖµÀ´Ö¸¶¨Ìí¼Ó
-                    // Ï¸¿´µ½µ×ÊÇ script »¹ÊÇ style
-                    builder.AddStyleSrc()
-                       .Self()
-                       .WithNonce()       //browserLink hashes
-                       .WithHash256("47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=")
-                       .WithHash256("tVFibyLEbUGj+pO/ZSi96c01jJCvzWilvI5Th+wLeGE=")
-                       .WithHash256("F4aWb1J5I2aKKKAQ63BQpSVpWtA+zcxYQc+Im1ijX24=");
+				if (relaxCspForSwagger)
+				{
+					builder.AddStyleSrc().Self().UnsafeInline();
+					builder.AddScriptSrc().Self().UnsafeInline();
+				}
+				else
+				{
+					// é…ç½® csp
+					// ç¬¨æ–¹æ³• å¯ä»¥åœ¨è°·æ­Œæµè§ˆå™¨æ‰¾åˆ°æŽ§åˆ¶å°æŠ¥é”™ä¸­æä¾›çš„sha256å€¼æ¥æŒ‡å®šæ·»åŠ 
+					// ç»†çœ‹åˆ°åº•æ˜¯ script è¿˜æ˜¯ style
+					builder.AddStyleSrc()
+					   .Self()
+					   .WithNonce()       //browserLink hashes
+					   .WithHash256("47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=")
+					   .WithHash256("tVFibyLEbUGj+pO/ZSi96c01jJCvzWilvI5Th+wLeGE=")
+					   .WithHash256("F4aWb1J5I2aKKKAQ63BQpSVpWtA+zcxYQc+Im1ijX24=");
 
+					builder.AddScriptSrc()
+					 .Self()
+					 .WithHash256("eV5p0xsw4UC/bJ48fZ5luze2UmXZbYuQMHs4vAKQynQ=");
 
+					//builder.AddScriptSrc()
+					//.WithNonce()
+					//.UnsafeInline();
+				}
 
-                    builder.AddScriptSrc()
-                     .Self()
-                     .WithHash256("eV5p0xsw4UC/bJ48fZ5luze2UmXZbYuQMHs4vAKQynQ=");
+				builder.AddBaseUri().Self();
+				builder.AddFrameAncestors().None();
+			})
+			.RemoveServerHeader()
+			.AddPermissionsPolicy(builder =>
+			{
+				builder.AddAccelerometer().None();
+				builder.AddAutoplay().None();
+				builder.AddCamera().None();
+				builder.AddEncryptedMedia().None();
+				builder.AddFullscreen().All();
+				builder.AddGeolocation().None();
+				builder.AddGyroscope().None();
+				builder.AddMagnetometer().None();
+				builder.AddMicrophone().None();
+				builder.AddMidi().None();
+				builder.AddPayment().None();
+				builder.AddPictureInPicture().None();
+				builder.AddSyncXHR().None();
+				builder.AddUsb().None();
+			});
 
-                    //builder.AddScriptSrc()
-                    //.WithNonce()
-                    //.UnsafeInline();
-                }
+		if (!isDev)
+		{
+			// maxage = one year in seconds
+			policy.AddStrictTransportSecurityMaxAgeIncludeSubDomains(60 * 60 * 24 * 365);
+		}
 
-
-
-                builder.AddBaseUri().Self();
-                builder.AddFrameAncestors().None();
-            })
-            .RemoveServerHeader()
-            .AddPermissionsPolicy(builder =>
-            {
-                builder.AddAccelerometer().None();
-                builder.AddAutoplay().None();
-                builder.AddCamera().None();
-                builder.AddEncryptedMedia().None();
-                builder.AddFullscreen().All();
-                builder.AddGeolocation().None();
-                builder.AddGyroscope().None();
-                builder.AddMagnetometer().None();
-                builder.AddMicrophone().None();
-                builder.AddMidi().None();
-                builder.AddPayment().None();
-                builder.AddPictureInPicture().None();
-                builder.AddSyncXHR().None();
-                builder.AddUsb().None();
-            });
-
-        if (!isDev)
-        {
-            // maxage = one year in seconds
-            policy.AddStrictTransportSecurityMaxAgeIncludeSubDomains(60 * 60 * 24 * 365);
-        }
-
-        return policy;
-    }
+		return policy;
+	}
 }

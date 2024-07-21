@@ -5,7 +5,12 @@ VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{404807F0-5CAE-4CE9-9FD3-49F1E6365F1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VueBffProxy.Server", "src\Server\VueBffProxy.Server\VueBffProxy.Server.csproj", "{D49CBADA-8568-4403-904E-E17C2C1DFA19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VueBffProxy.Server", "src\Server\VueBffProxy.Server\VueBffProxy.Server.csproj", "{D49CBADA-8568-4403-904E-E17C2C1DFA19}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5FAE8C8B-FFD6-472B-887F-BE2A2132EDA7}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
