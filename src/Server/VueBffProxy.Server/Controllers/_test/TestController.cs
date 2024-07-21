@@ -71,7 +71,7 @@ public class TestController(IAntiforgery antiforgery) : ControllerBase
 	public IActionResult UserInfo()
 	{
 		var id = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
-		var name = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)!.Value;
+		//var name = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)!.Value;
 
 		// 当用户登录时，生成并存储一个新的XSRF令牌。
 		// 这个令牌会与当前用户进行关联，即User对象 ClaimsPrincipal类型
@@ -86,7 +86,7 @@ public class TestController(IAntiforgery antiforgery) : ControllerBase
 			Secure = true, // https协议才发送
 			SameSite = SameSiteMode.Strict // 防止来自其他站点的CSRF攻击
 		});
-		return Ok(new UserInfo(id, name));
+		return Ok(new UserInfo(id, "xx"));
 	}
 }
 

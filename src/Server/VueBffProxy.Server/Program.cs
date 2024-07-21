@@ -1,6 +1,7 @@
 using AspNetCore.Proxy;
 using VueBffProxy.Server;
 using VueBffProxy.Server.Extensions;
+using VueBffProxy.Server.ReverseProxy;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -8,7 +9,9 @@ var configuration = builder.Configuration;
 var env = builder.Environment;
 
 services.AddInfrastructure()
+	.ApplyYarp()
 	.AddSecurity(configuration);
+
 
 if (env.IsDevelopment())
 {
@@ -71,7 +74,7 @@ if (env.IsDevelopment())
 			}));
 	}
 }
-
+app.MapReverseProxy();
 // 处理spa路由
 app.MapFallbackToPage("/_Host");
 
