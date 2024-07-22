@@ -2,7 +2,7 @@
 
 #### 介绍
 .net对Spa应用支持的BFF层应用，提供Cors CSP XSS防护机制。轻松适配Vite构建的web应用
-
+该分支集成Yarp以及Openiddict搭建的身份服务，提供了前端应用通过Bff来访问受限制资源的案例
 
 #### 安装教程
 1.  安装pnpm
