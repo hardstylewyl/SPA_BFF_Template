@@ -12,7 +12,6 @@ services.AddInfrastructure()
 	.ApplyYarp()
 	.AddSecurity(configuration);
 
-
 if (env.IsDevelopment())
 {
 	services.AddProxies();
