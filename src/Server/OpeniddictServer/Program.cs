@@ -23,7 +23,7 @@ services.AddCors(a => a.AddDefaultPolicy(builder =>
 {
 	builder.AllowCredentials()
 						   .WithOrigins(
-							   "https://localhost:4200")
+							   "https://localhost:7017")
 						   .SetIsOriginAllowedToAllowWildcardSubdomains()
 						   .AllowAnyHeader()
 						   .AllowAnyMethod();
