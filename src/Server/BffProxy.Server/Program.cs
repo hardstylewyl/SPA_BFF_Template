@@ -1,4 +1,5 @@
 using AspNetCore.Proxy;
+using Microsoft.Extensions.FileProviders;
 using VueBffProxy.Server;
 using VueBffProxy.Server.Extensions;
 using VueBffProxy.Server.ReverseProxy;
@@ -36,6 +37,20 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+//支持多个web应用的静态文件
+var path = Path.Combine(AppContext.BaseDirectory, "web/assets");
+app.UseStaticFiles(new StaticFileOptions()
+{
+	RequestPath = "/assets",
+	FileProvider = new PhysicalFileProvider(path)
+});
+var path2 = Path.Combine(AppContext.BaseDirectory, "web2/assets");
+app.UseStaticFiles(new StaticFileOptions()
+{
+	RequestPath = "/assets",
+	FileProvider = new PhysicalFileProvider(path2)
+});
 
 app.UseRouting();
 
@@ -76,5 +91,7 @@ if (env.IsDevelopment())
 app.MapReverseProxy();
 // 处理spa路由
 app.MapFallbackToPage("/_Host");
-
+//同时支持多个web应用
+app.MapFallbackToPage("/spa", "/_WebAppHost");
+app.MapFallbackToPage("/spa2", "/_WebApp2Host");
 app.Run();

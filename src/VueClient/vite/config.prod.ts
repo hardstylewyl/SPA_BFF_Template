@@ -24,7 +24,7 @@ export default mergeConfig(
 			pure: ['alert', 'console.log', 'console.warn', 'debugger'],
 		},
 		build: {
-			outDir:"../Server/VueBffProxy.Server/wwwroot",
+			outDir:"../Server/BffProxy.Server/wwwroot",
 			emptyOutDir:true,
 			chunkSizeWarningLimit: 2000,
 			reportCompressedSize: false, // 禁用 gzip 压缩大小报告，可略微减少打包时间
